@@ -18,27 +18,31 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public Library createLibrary() {
-
         transaction.begin();
+        Library library = null;
         try {
-            entityManager.persist(libraryFiller());
+            library = libraryFiller();
+            entityManager.persist(library);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
         }
-        return libraryFiller();
+        return library;
     }
 
     @Override
     public Library getLibraryById(Long id) {
         TypedQuery<Library> libraryQuery = entityManager.createQuery("select l from Library l where l.id = :id", Library.class);
         libraryQuery.setParameter("id", id);
-        return libraryQuery.getSingleResult();
+        Library singleResult = libraryQuery.getSingleResult();
+        System.out.println("-------------------------------\n" + singleResult + "\n-------------------------------\n");
+        return singleResult;
     }
 
     @Override
     public List<Library> getAllLibraries() {
         TypedQuery<Library> libraryQuery = entityManager.createQuery("select l from Library l" , Library.class);
+        System.out.println(libraryQuery.getResultList());
         return libraryQuery.getResultList();
     }
 
@@ -58,15 +62,18 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void addBookToLibrary(Long libraryId, Long bookId, int numberOfCopies) {
-        TypedQuery<Book> findBookQuery = entityManager.createQuery("select b from Book b where b.id = :bookId", Book.class);
-        findBookQuery.setParameter("bookId", bookId);
-        Book addedBook = findBookQuery.getSingleResult();
+        transaction.begin();
+        Book book = entityManager.find(Book.class, bookId);
+        Library library = entityManager.find(Library.class, libraryId);
 
-        TypedQuery<Library> findLibraryQuery = entityManager.createQuery("select l from Library l where l.id = :libraryId", Library.class);
-        findLibraryQuery.setParameter("libraryId" , libraryId);
-        Library addedLibrary = findLibraryQuery.getSingleResult();
-
-        addedLibrary.getBooks().add(addedBook);
-        addedBook.getLibraries().add(addedLibrary);
+        library.getBooks().add(book);
+        book.getLibraries().add(library);
+        try {
+            entityManager.merge(library);
+            entityManager.merge(book);
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+        }
     }
 }

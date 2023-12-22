@@ -1,6 +1,7 @@
 package com.div.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class InputUtil {
@@ -32,7 +33,10 @@ public class InputUtil {
         Scanner scanner = new Scanner(System.in);
         System.out.println(title);
         String input = scanner.nextLine();
-        LocalDate localDate = LocalDate.parse(input);
-        return localDate;
+        if (input.isEmpty()) {
+            return null;
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        return LocalDate.parse(input, formatter);
     }
 }

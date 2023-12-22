@@ -13,14 +13,14 @@ public class EntityFiller {
         String name = inputRequiredString("Insert author name: ");
         String surname = inputRequiredString("Insert author surname: ");
         LocalDate birthDate = inputRequiredDate("Insert birth date: ");
-        LocalDate death_date = inputRequiredDate("Insert death date: ");
+        LocalDate deathDate = inputRequiredDate("Insert death date: ");
         String nationality = inputRequiredString("Insert nationality: ");
 
         Author newAuthor = new Author();
         newAuthor.setName(name);
         newAuthor.setSurname(surname);
         newAuthor.setBirthDate(birthDate);
-        newAuthor.setDeathDate(death_date);
+        newAuthor.setDeathDate(deathDate);
         newAuthor.setNationality(nationality);
         return newAuthor;
     }
@@ -32,6 +32,7 @@ public class EntityFiller {
         String description = inputRequiredString("Insert description: ");
         String language = inputRequiredString("Insert language: ");
         int availableCopies = inputRequiredInt("Insert number of available copies: ");
+        Long authorId = inputRequiredLong("Insert author ID: ");
 
         Book newBook = new Book();
         newBook.setTitle(title);
@@ -40,6 +41,10 @@ public class EntityFiller {
         newBook.setDescription(description);
         newBook.setLanguage(language);
         newBook.setAvailableCopies(availableCopies);
+
+        Author author = new Author();
+        author.setId(authorId);
+        newBook.setAuthor(author);
 
         return newBook;
     }

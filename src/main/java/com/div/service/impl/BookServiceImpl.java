@@ -18,13 +18,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book createBook() {
         transaction.begin();
+        Book book = null;
         try {
-            entityManager.persist(bookFiller());
+            book = bookFiller();
+            entityManager.persist(book);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
         }
-        return bookFiller();
+        return book;
     }
 
     @Override

@@ -20,13 +20,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Author createAuthor() {
         transaction.begin();
+        Author author = null;
         try {
-            entityManager.persist(authorFiller());
+            author = authorFiller();
+            entityManager.persist(author);
             transaction.commit();
         } catch (Exception e) {
             transaction.rollback();
         }
-        return authorFiller();
+        return author;
     }
 
     @Override

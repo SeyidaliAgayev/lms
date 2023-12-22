@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,11 +31,11 @@ public class Book {
     @JoinTable(schema = "library_management",
             name = "books_libraries",
             joinColumns = @JoinColumn(
-                    name = "books_id", referencedColumnName = "id"),
+                    name = "books_id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "libraries_id", referencedColumnName = "id"
+                    name = "libraries_id"
             ))
-    private List<Library> libraries;
+    private List<Library> libraries = new ArrayList<>();
     @ManyToOne
     private Author author;
 }

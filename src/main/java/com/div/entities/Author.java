@@ -23,7 +23,7 @@ public class Author {
     private String surname;
     @Column(name = "birth_date")
     private LocalDate birthDate;
-    @Column(name = "death_date")
+    @Column(name = "death_date", nullable = true)
     private LocalDate deathDate;
     private String nationality;
     @OneToMany
