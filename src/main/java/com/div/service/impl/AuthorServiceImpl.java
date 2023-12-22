@@ -19,9 +19,27 @@ public class AuthorServiceImpl implements CRUDService<Author>, AuthorService {
     private AuthorServiceImpl() {
 
     }
-    public static AuthorServiceImpl getInstance() {
+    public static AuthorServiceImpl getInstance() {//TODO sencede burada instance hemise null olmayacaq ?? ))
         return instance == null ? new AuthorServiceImpl() : instance;
     }
+
+
+    /**    --->>> LazyInitalized SINGLETON NUMUNESI
+     *public class LazyInitializedSingleton {
+     *
+     *     private static LazyInitializedSingleton instance;
+     *
+     *     private LazyInitializedSingleton(){}
+     *
+     *     public static LazyInitializedSingleton getInstance() {
+     *         if (instance == null) {
+     *             instance = new LazyInitializedSingleton();
+     *         }
+     *         return instance;
+     *     }
+     * }
+     */
+
     @Override
     public Author create() {
         EntityManage.getInstance().getTransactionFromEntityManager().begin();

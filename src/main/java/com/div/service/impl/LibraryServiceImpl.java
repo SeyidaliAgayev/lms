@@ -17,7 +17,7 @@ public class LibraryServiceImpl implements CRUDService<Library>, LibraryService 
     private LibraryServiceImpl() {
 
     }
-    public static LibraryServiceImpl getInstance() {
+    public static LibraryServiceImpl getInstance() {//TODO singleton problem
         return instance == null ? new LibraryServiceImpl() : instance;
     }
 
@@ -64,7 +64,7 @@ public class LibraryServiceImpl implements CRUDService<Library>, LibraryService 
         TypedQuery<Library> libraryQuery = entityManager.createQuery("delete from Library l where l.id = :id", Library.class);
         libraryQuery.setParameter("id", id);
     }
-
+//TODO avialivable copies relationu sehv quruldugu ucun burada da sehvlikler var
     @Override
     public void addBookToLibrary(Long libraryId, Long bookId, int numberOfCopies) {
         EntityManage.getInstance().getTransactionFromEntityManager().begin();

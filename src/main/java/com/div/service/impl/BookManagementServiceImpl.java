@@ -16,9 +16,11 @@ public class BookManagementServiceImpl implements BookManagementService {
     private BookManagementServiceImpl() {
 
     }
-    public static BookManagementServiceImpl getInstance() {
+    public static BookManagementServiceImpl getInstance() {//TODO butun clsasslarsa singleton patterni duzelt!!!
         return instance == null ? new BookManagementServiceImpl() : instance;
     }
+
+    //TODO same problem AuthorManagamentServiceimpla bax
     @Override
     public void bookManagement() {
         while (true) {

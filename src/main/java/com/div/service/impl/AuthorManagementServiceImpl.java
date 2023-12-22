@@ -18,6 +18,8 @@ public class AuthorManagementServiceImpl implements AuthorManagementService {
     public static AuthorManagementServiceImpl getInstance() {
         return instance == null ? new AuthorManagementServiceImpl() : instance;
     }
+
+    //TODO "Insert id"  4 yerdə təkrar olunur class daxilində globala çıxara bilersen qısaca İndi insert id çap olunur sabah deyişilse 4 yerdə də dəyişməli olacaqsan
     @Override
     public void authorManagement() {
         while (true) {

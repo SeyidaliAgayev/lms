@@ -15,7 +15,7 @@ public class LibraryManagementServiceImpl implements LibraryManagementService {
     private LibraryManagementServiceImpl() {
 
     }
-    public static LibraryManagementServiceImpl getInstance() {
+    public static LibraryManagementServiceImpl getInstance() {//TODO singleton problem
         return instance == null ? new LibraryManagementServiceImpl() : instance;
     }
 

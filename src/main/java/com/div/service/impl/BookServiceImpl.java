@@ -14,11 +14,12 @@ import static com.div.helper.EntityFiller.bookFiller;
 import static com.div.jpaConfig.EntityManage.entityManager;
 
 public class BookServiceImpl implements CRUDService<Book>, BookService {
+    //TODO remove unused imports
     private static BookServiceImpl instance = null;
     private BookServiceImpl() {
 
     }
-    public static BookServiceImpl getInstance() {
+    public static BookServiceImpl getInstance() {//TODO singleton problem again
         return instance == null ? new BookServiceImpl() : instance;
     }
     @Override

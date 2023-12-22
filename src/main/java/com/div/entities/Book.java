@@ -17,6 +17,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 public class Book {
+    //TODO add toString
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,6 +28,7 @@ public class Book {
     private String publicationYear;
     private String description;
     private String language;
+    //TODO avialivable copies burada saxlanılMAMALIDIR!
     @Column(name = "available_copies")
     private int availableCopies;
     @ManyToMany(fetch = FetchType.EAGER)
