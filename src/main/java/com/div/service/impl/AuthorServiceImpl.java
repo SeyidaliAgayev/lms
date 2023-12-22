@@ -2,50 +2,55 @@ package com.div.service.impl;
 
 import com.div.entities.Author;
 import com.div.entities.Book;
+import com.div.jpaConfig.EntityManage;
 import com.div.service.AuthorService;
+import com.div.service.CRUDService;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
 import static com.div.helper.EntityFiller.authorFiller;
-import static com.div.util.InputUtil.inputRequiredDate;
-import static com.div.util.InputUtil.inputRequiredString;
+import static com.div.jpaConfig.EntityManage.entityManager;
 
-public class AuthorServiceImpl implements AuthorService {
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ali");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    EntityTransaction transaction = entityManager.getTransaction();
+
+public class AuthorServiceImpl implements CRUDService<Author>, AuthorService {
+    private static AuthorServiceImpl instance = null;
+    private AuthorServiceImpl() {
+
+    }
+    public static AuthorServiceImpl getInstance() {
+        return instance == null ? new AuthorServiceImpl() : instance;
+    }
     @Override
-    public Author createAuthor() {
-        transaction.begin();
+    public Author create() {
+        EntityManage.getInstance().getTransactionFromEntityManager().begin();
         Author author = null;
         try {
             author = authorFiller();
             entityManager.persist(author);
-            transaction.commit();
+            EntityManage.getInstance().getTransactionFromEntityManager().commit();
         } catch (Exception e) {
-            transaction.rollback();
+            EntityManage.getInstance().getTransactionFromEntityManager().rollback();
         }
         return author;
     }
 
     @Override
-    public Author getAuthorById(Long id) {
+    public Author getById(Long id) {
         TypedQuery<Author> authorQuery = entityManager.createQuery("select a from Author a where a.id = :id", Author.class);
         authorQuery.setParameter("id", id);
         return authorQuery.getSingleResult();
     }
 
     @Override
-    public List<Author> getAllAuthors() {
+    public List<Author> getAll() {
         TypedQuery<Author> authorQuery = entityManager.createQuery("select a from Author a" , Author.class);
         return authorQuery.getResultList();
     }
 
     @Override
-    public Author updateAuthor(Long id) {
+    public Author update(Long id) {
         TypedQuery<Author> authorQuery = entityManager.createQuery("update Author a set name = ?, surname = ?, " +
                 "birthDate = ?, deathDate = ?, nationality = ? " +
                 "where a.id = id", Author.class);
@@ -53,7 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(Long id) {
+    public void delete(Long id) {
         TypedQuery<Author> authorQuery = entityManager.createQuery("delete from Author a where a.id = :id", Author.class);
         authorQuery.setParameter("id", id);
     }

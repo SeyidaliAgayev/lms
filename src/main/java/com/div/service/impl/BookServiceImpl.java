@@ -2,53 +2,59 @@ package com.div.service.impl;
 
 import com.div.entities.Author;
 import com.div.entities.Book;
+import com.div.jpaConfig.EntityManage;
 import com.div.service.BookService;
+import com.div.service.CRUDService;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
+import static com.div.helper.EntityFiller.authorFiller;
 import static com.div.helper.EntityFiller.bookFiller;
-import static com.div.util.InputUtil.*;
+import static com.div.jpaConfig.EntityManage.entityManager;
 
-public class BookServiceImpl implements BookService {
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ali");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
-    EntityTransaction transaction = entityManager.getTransaction();
+public class BookServiceImpl implements CRUDService<Book>, BookService {
+    private static BookServiceImpl instance = null;
+    private BookServiceImpl() {
+
+    }
+    public static BookServiceImpl getInstance() {
+        return instance == null ? new BookServiceImpl() : instance;
+    }
     @Override
-    public Book createBook() {
-        transaction.begin();
+    public Book create() {
+        EntityManage.getInstance().getTransactionFromEntityManager().begin();
         Book book = null;
         try {
             book = bookFiller();
             entityManager.persist(book);
-            transaction.commit();
+            EntityManage.getInstance().getTransactionFromEntityManager().commit();
         } catch (Exception e) {
-            transaction.rollback();
+            EntityManage.getInstance().getTransactionFromEntityManager().rollback();
         }
         return book;
     }
 
     @Override
-    public Book getBookById(Long id) {
+    public Book getById(Long id) {
         TypedQuery<Book> bookQuery = entityManager.createQuery("select b from Book b where b.id = :id", Book.class);
         bookQuery.setParameter("id", id);
         return bookQuery.getSingleResult();
     }
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         TypedQuery<Book> bookQuery = entityManager.createQuery("select b from Book b" , Book.class);
         return bookQuery.getResultList();
     }
     @Override
-    public Book updateBook(Long id) {
+    public Book update(Long id) {
         TypedQuery<Book> bookQuery = entityManager.createQuery("update Book b set title = ?, isbn = ?, " +
                 "publicationYear = ?, description = ?, language = ? , availableCopies = ? " +
                 "where b.id = id", Book.class);
         return bookQuery.getSingleResult();
     }
     @Override
-    public void deleteBook(Long id) {
+    public void delete(Long id) {
         TypedQuery<Book> bookQuery = entityManager.createQuery("delete from Book b where b.id = :id", Book.class);
         bookQuery.setParameter("id", id);
     }

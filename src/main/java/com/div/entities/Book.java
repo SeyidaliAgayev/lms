@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "books", schema = "library_management")
@@ -38,4 +40,5 @@ public class Book {
     private List<Library> libraries = new ArrayList<>();
     @ManyToOne
     private Author author;
+    
 }
